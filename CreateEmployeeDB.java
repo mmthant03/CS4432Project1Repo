@@ -29,15 +29,15 @@ public class CreateEmployeeDB {
                 stmt.executeUpdate(s + empvals[i]);
             System.out.println("EMPLOYEE records inserted.");
 
-            s = "create table DEPT(deptID int, deptName varchar(20))";
+            s = "create table DEPT(deptID int, deptName varchar(100))";
             stmt.executeUpdate(s);
             System.out.println("Table Dept created.");
 
             s = "insert into DEPT(deptID, deptName) values ";
             String[] deptvals = {"(01, 'Marketing')",
-                    "(02, 'HumanResource')",
-                    "(03, 'Logistic')",
-                    "(04, 'CustomerService')"};
+                                "(02, 'HumanResource')",
+                                "(03, 'Logistic')",
+                                "(04, 'CustomerService')"};
             for (int i=0; i<deptvals.length; i++)
                 stmt.executeUpdate(s + deptvals[i]);
             System.out.println("DEPT records inserted.");
