@@ -1,6 +1,8 @@
 package simpledb.buffer;
 
 import simpledb.file.*;
+
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 /**
@@ -12,6 +14,7 @@ class BasicBufferMgr {
    private Buffer[] bufferpool;
    private int numAvailable;
    private LinkedList<Integer> emptyFrameList;
+   private Hashtable<Integer, Integer> idTable = new Hashtable<Integer, Integer>();
    
    /**
     * Creates a buffer manager having the specified number 
@@ -29,12 +32,11 @@ class BasicBufferMgr {
    BasicBufferMgr(int numbuffs) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
-      // create empty buffer list
-      emptyFrameList = new LinkedList<Integer>();
       //Pool Creation
       for (int i=0; i<numbuffs; i++)
          bufferpool[i] = new Buffer();
-         emptyFrameList.add(i);
+      // create empty buffer list
+         emptyFrameList = new LinkedList<Integer>();
    }
    
    /**
@@ -63,6 +65,14 @@ class BasicBufferMgr {
          if (buff == null)
             return null;
          buff.assignToBlock(blk);
+         int buffId = buff.getBufferIndex();
+         int blockId = buff.getBlockNum();
+         if(idTable.containsKey(blockId)) {
+       	  idTable.remove(blockId);
+       	  idTable.put(blockId, buffId);
+         } else {
+       	  idTable.put(blockId, buffId);
+         }
       }
       if (!buff.isPinned())
          numAvailable--;
@@ -84,6 +94,14 @@ class BasicBufferMgr {
       if (buff == null)
          return null;
       buff.assignToNew(filename, fmtr);
+      int buffId = buff.getBufferIndex();
+      int blockId = buff.getBlockNum();
+      if(idTable.containsKey(blockId)) {
+    	  idTable.remove(blockId);
+    	  idTable.put(blockId, buffId);
+      } else {
+    	  idTable.put(blockId, buffId);
+      }
       numAvailable--;
       buff.pin();
       return buff;
@@ -107,7 +125,6 @@ class BasicBufferMgr {
       return numAvailable;
    }
    
-   // Task 2.2
    private Buffer findExistingBuffer(Block blk) {
       for (Buffer buff : bufferpool) {
          Block b = buff.block();
