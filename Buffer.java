@@ -89,6 +89,16 @@ public class Buffer {
    }
 
    /**
+    * Student implemented function
+    * @author Myo Thant & Robert Dutile
+    * Search for the location of the corresponding block
+    * @return int value of the block
+    */
+    public int getBlockNum() {
+      return this.blk.number();
+   }
+   
+   /**
     * Writes an integer to the specified offset of the
     * buffer's page.
     * This method assumes that the transaction has already
