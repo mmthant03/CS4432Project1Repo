@@ -20,6 +20,7 @@ public class Buffer {
    private int modifiedBy = -1;  // negative means not modified
    private int logSequenceNumber = -1; // negative means no corresponding log record
    private boolean refBit = false; //0 means ok to edit, 1 means not ok to edit, Student Addition
+   private int bufferIndex;
 
    /**
     * Creates a new buffer, wrapping a new 
@@ -36,6 +37,14 @@ public class Buffer {
     * is called first.
     */
    public Buffer() {}
+
+   /**
+    * Student implemented Constructor
+    * @author Myo Thant & Robert Dutile
+    * Creates a new buffer while passing along the index in the buffer pool.
+    * @param bufferIndex
+    */
+   public Buffer(int bufferIndex) { this.bufferIndex = bufferIndex; }
    
    /**
     * Returns the integer value at the specified offset of the
@@ -65,6 +74,18 @@ public class Buffer {
    //Student Addition
    public boolean getRef() {
 	   return refBit;
+   }
+
+   /**
+    * Student implemented function
+    * @author Myo Thant & Robert Dutile
+    * Returns the index of buffer inside the buffer pool
+    * Since the buffer index value is final inside the buffer pool,
+    * setter method is not implemmented.
+    * @return the int value of the index
+    */
+   public int getBufferIndex() {
+      return this.bufferIndex;
    }
 
    /**

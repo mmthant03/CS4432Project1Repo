@@ -107,6 +107,7 @@ class BasicBufferMgr {
       return numAvailable;
    }
    
+   // Task 2.2
    private Buffer findExistingBuffer(Block blk) {
       for (Buffer buff : bufferpool) {
          Block b = buff.block();
