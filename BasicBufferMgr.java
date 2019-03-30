@@ -32,11 +32,13 @@ class BasicBufferMgr {
    BasicBufferMgr(int numbuffs) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
-      //Pool Creation
-      for (int i=0; i<numbuffs; i++)
-         bufferpool[i] = new Buffer();
       // create empty buffer list
-         emptyFrameList = new LinkedList<Integer>();
+      emptyFrameList = new LinkedList<Integer>();
+      //Pool Creation
+      for (int i=0; i<numbuffs; i++) {
+         bufferpool[i] = new Buffer(i);
+         emptyFrameList.add(i);
+      }
    }
    
    /**
