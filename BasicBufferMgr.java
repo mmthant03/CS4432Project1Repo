@@ -67,14 +67,7 @@ class BasicBufferMgr {
          if (buff == null)
             return null;
          buff.assignToBlock(blk);
-         int buffId = buff.getBufferIndex();
-         int blockId = buff.getBlockNum();
-         if(idTable.containsKey(blockId)) {
-       	  idTable.remove(blockId);
-       	  idTable.put(blockId, buffId);
-         } else {
-       	  idTable.put(blockId, buffId);
-         }
+         updateBuff(buff);
       }
       if (!buff.isPinned())
          numAvailable--;
@@ -96,14 +89,7 @@ class BasicBufferMgr {
       if (buff == null)
          return null;
       buff.assignToNew(filename, fmtr);
-      int buffId = buff.getBufferIndex();
-      int blockId = buff.getBlockNum();
-      if(idTable.containsKey(blockId)) {
-    	  idTable.remove(blockId);
-    	  idTable.put(blockId, buffId);
-      } else {
-    	  idTable.put(blockId, buffId);
-      }
+      updateBuff(buff);
       numAvailable--;
       buff.pin();
       return buff;
@@ -126,14 +112,45 @@ class BasicBufferMgr {
    int available() {
       return numAvailable;
    }
-   
-   private Buffer findExistingBuffer(Block blk) {
-      for (Buffer buff : bufferpool) {
-         Block b = buff.block();
-         if (b != null && b.equals(blk))
-            return buff;
+
+   /**
+    * Student implemented function
+    * @author Myo Thant, Robert Dutile
+    * Update the hash table when the new block is assigned or
+    * Existing buffer has a block replacement.
+    * @param buff object to replace inside hash table
+    */
+   private void updateBuff(Buffer buff) {
+      int buffId = buff.getBufferIndex();
+      int blockId = buff.getBlockNum();
+      if(idTable.containsKey(blockId)) {
+         idTable.remove(blockId);
+         idTable.put(blockId, buffId);
       }
-      return null;
+      else {
+         idTable.put(blockId, buffId);
+      }
+   }
+   
+   /**
+    * Modified method
+    * original @author Edward Sciore
+    * modified by @author Myo Thant and Robert Dutile
+    * The method is reinvented to finding existing buffer from buffer hash table
+    * instead of iterating through the array
+    * @param blk block number
+    * @return buffer if block number exists in hash table or,
+    * null if it does not exist
+    */
+    private Buffer findExistingBuffer(Block blk) {
+      int blockId = blk.number();
+      if(idTable.containsKey(blockId)) {
+         int buffId = idTable.get(blockId);
+         return bufferpool[buffId];
+      }
+      else {
+         return null;
+      }
    }
    
    private Buffer chooseUnpinnedBuffer() {
