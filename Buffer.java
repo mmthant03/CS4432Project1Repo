@@ -232,4 +232,16 @@ public class Buffer {
       blk = contents.append(filename);
       pins = 0;
    }
+   
+   //to string method, returns buffer ID, block toString and whether or not the buffer is pinned.
+   // returns NULL for the block if the buffer is empty.
+   public String toString() {
+	   if(blk == null) {
+		   String ansIfEmpty = bufferIndex + ", NULL, isPinned: " + this.isPinned();
+		   return ansIfEmpty;
+	   } else {
+		   String ans = bufferIndex + ", " + blk.toString() + ", isPinned: " + this.isPinned();
+		   return ans;
+	   }
+   }
 }
