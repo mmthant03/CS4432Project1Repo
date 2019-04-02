@@ -15,6 +15,8 @@ class BasicBufferMgr {
    private int numAvailable;
    private LinkedList<Integer> emptyFrameList;
    private Hashtable<Integer, Integer> idTable = new Hashtable<Integer, Integer>();
+   private int clockPointer = 0;
+   private int numBuffs;
    
    /**
     * Creates a buffer manager having the specified number 
@@ -161,10 +163,36 @@ class BasicBufferMgr {
          return buff;
       }
       else { // need to modified for clock replacement policy
-         for (Buffer buff : bufferpool)
-            if (!buff.isPinned())
+         // for (Buffer buff : bufferpool)
+         //    if (!buff.isPinned())
+         //    return buff;
+         Buffer buff = clockReplace();
+         if(buff != null) {
             return buff;
-      }
+         }
       return null;
+      }
+   }
+
+   private Buffer clockReplace() {
+      int isReplaced = 0;
+      Buffer buff = null;
+      while(isReplaced == 0) {
+         buff = bufferpool[clockPointer];
+         boolean pinned = buff.isPinned();
+         boolean refbit = buff.getRef();
+         clockPointer++;
+         if (clockPointer == numBuffs) {
+            clockPointer = 0;
+         }
+
+         if(pinned == false && refbit == false) {
+            isReplaced = 1;
+         }
+         else if (pinned == false && refbit == true) {
+            buff.setRef(false);
+         }
+      }
+      return buff;
    }
 }
