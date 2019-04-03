@@ -19,10 +19,12 @@ public class Buffer {
    private int pins = 0;
    private int modifiedBy = -1;  // negative means not modified
    private int logSequenceNumber = -1; // negative means no corresponding log record
-   private boolean refBit = false; //0 means ok to edit, 1 means not ok to edit, Student Addition
+   private boolean refBit; //0 means ok to edit, 1 means not ok to edit, Student Addition
    private int bufferIndex;
 
    /**
+    * CS4432-Project1:
+    * Students added initializer for refBit to constructor
     * Creates a new buffer, wrapping a new 
     * {@link simpledb.file.Page page}.  
     * This constructor is called exclusively by the 
@@ -36,15 +38,21 @@ public class Buffer {
     * {@link simpledb.server.SimpleDB#initFileAndLogMgr(String)} or
     * is called first.
     */
-   public Buffer() {}
+   public Buffer() {
+	   this.refBit = true;
+   }
 
    /**
+    * CS4432-Project1:
     * Student implemented Constructor
     * @author Myo Thant & Robert Dutile
     * Creates a new buffer while passing along the index in the buffer pool.
     * @param bufferIndex
     */
-   public Buffer(int bufferIndex) { this.bufferIndex = bufferIndex; }
+   public Buffer(int bufferIndex) { 
+	   this.bufferIndex = bufferIndex;
+	   this.refBit = true;
+   }
    
    /**
     * Returns the integer value at the specified offset of the
@@ -70,6 +78,7 @@ public class Buffer {
       return contents.getString(offset);
    }
    
+   //CS4432-Project1:
    //Returns the value of the reference bit.
    //Student Addition
    public boolean getRef() {
@@ -77,6 +86,7 @@ public class Buffer {
    }
 
    /**
+    * CS4432-Project1:
     * Student implemented function
     * @author Myo Thant & Robert Dutile
     * Returns the index of buffer inside the buffer pool
@@ -89,6 +99,7 @@ public class Buffer {
    }
 
    /**
+    * CS4432-Project1:
     * Student implemented function
     * @author Myo Thant & Robert Dutile
     * Search for the location of the corresponding block
@@ -140,6 +151,7 @@ public class Buffer {
       contents.setString(offset, val);
    }
    
+   //CS4432-Project1:
    //adjusts the reference bit refBit to match specified value
    //student Addition
    public void setRef(boolean newRef) {
@@ -233,6 +245,7 @@ public class Buffer {
       pins = 0;
    }
    
+   //CS4432-Project1:
    //to string method, returns buffer ID, block toString and whether or not the buffer is pinned.
    // returns NULL for the block if the buffer is empty.
    public String toString() {
