@@ -23,11 +23,12 @@ class BasicBufferMgr {
     * numBuffs --> num of buffer that is given to the bufferpool
     */
    private LinkedList<Integer> emptyFrameList;
-   private Hashtable<Integer, Integer> idTable = new Hashtable<Integer, Integer>();
+   private Hashtable<Integer, Integer> idTable;
    private int clockPointer = 0;
    private int numBuffs;
    
    /**
+    * CS4432-Project1:
     * Creates a buffer manager having the specified number 
     * of buffer slots.
     * This constructor depends on both the {@link FileMgr} and
@@ -43,6 +44,7 @@ class BasicBufferMgr {
    BasicBufferMgr(int numbuffs) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
+      idTable = new Hashtable<Integer, Integer>(numbuffs);
       // create empty buffer list
       emptyFrameList = new LinkedList<Integer>();
       //Pool Creation
