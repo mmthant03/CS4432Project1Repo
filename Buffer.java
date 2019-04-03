@@ -23,6 +23,8 @@ public class Buffer {
    private int bufferIndex;
 
    /**
+    * CS4432-Project1:
+    * Students added initializer for refBit to constructor
     * Creates a new buffer, wrapping a new 
     * {@link simpledb.file.Page page}.  
     * This constructor is called exclusively by the 
@@ -41,6 +43,7 @@ public class Buffer {
    }
 
    /**
+    * CS4432-Project1:
     * Student implemented Constructor
     * @author Myo Thant & Robert Dutile
     * Creates a new buffer while passing along the index in the buffer pool.
@@ -75,6 +78,7 @@ public class Buffer {
       return contents.getString(offset);
    }
    
+   //CS4432-Project1:
    //Returns the value of the reference bit.
    //Student Addition
    public boolean getRef() {
@@ -82,6 +86,7 @@ public class Buffer {
    }
 
    /**
+    * CS4432-Project1:
     * Student implemented function
     * @author Myo Thant & Robert Dutile
     * Returns the index of buffer inside the buffer pool
@@ -94,6 +99,7 @@ public class Buffer {
    }
 
    /**
+    * CS4432-Project1:
     * Student implemented function
     * @author Myo Thant & Robert Dutile
     * Search for the location of the corresponding block
@@ -145,6 +151,7 @@ public class Buffer {
       contents.setString(offset, val);
    }
    
+   //CS4432-Project1:
    //adjusts the reference bit refBit to match specified value
    //student Addition
    public void setRef(boolean newRef) {
@@ -238,6 +245,7 @@ public class Buffer {
       pins = 0;
    }
    
+   //CS4432-Project1:
    //to string method, returns buffer ID, block toString and whether or not the buffer is pinned.
    // returns NULL for the block if the buffer is empty.
    public String toString() {
