@@ -237,10 +237,10 @@ public class Buffer {
    // returns NULL for the block if the buffer is empty.
    public String toString() {
 	   if(blk == null) {
-		   String ansIfEmpty = bufferIndex + ", NULL, isPinned: " + this.isPinned();
+		   String ansIfEmpty = "[ bufferIndex " + bufferIndex + ", NULL, isPinned: " + this.isPinned();
 		   return ansIfEmpty;
 	   } else {
-		   String ans = bufferIndex + ", " + blk.toString() + ", isPinned: " + this.isPinned();
+		   String ans = "[ bufferIndex " + bufferIndex + ", " + blk.toString() + ", isPinned: " + this.isPinned();
 		   return ans;
 	   }
    }

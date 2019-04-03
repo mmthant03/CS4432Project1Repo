@@ -13,6 +13,15 @@ import java.util.LinkedList;
 class BasicBufferMgr {
    private Buffer[] bufferpool;
    private int numAvailable;
+
+   /**
+    * CS4432-Project1:
+    * emptyFrameList --> to keep track of num of empty frames in the buffer
+    * idTable --> to efficiently find specific block num
+    * clockPointer --> since we use clock policy, we need a pointer to rotate,
+    *                   change refbit and replace frames
+    * numBuffs --> num of buffer that is given to the bufferpool
+    */
    private LinkedList<Integer> emptyFrameList;
    private Hashtable<Integer, Integer> idTable = new Hashtable<Integer, Integer>();
    private int clockPointer = 0;
@@ -54,10 +63,12 @@ class BasicBufferMgr {
    }
    
    /**
-    * Pins a buffer to the specified block. 
+    * CS4432-Project1:
+    * Pins a buffer to the specified block.
     * If there is already a buffer assigned to that block
-    * then that buffer is used;  
+    * then that buffer is used;
     * otherwise, an unpinned buffer from the pool is chosen.
+    * Afterwards, assigned block num and buffer index is stored in idTable
     * Returns a null value if there are no available buffers.
     * @param blk a reference to a disk block
     * @return the pinned buffer
@@ -78,9 +89,11 @@ class BasicBufferMgr {
    }
    
    /**
+    * CS4432-Project1:
     * Allocates a new block in the specified file, and
-    * pins a buffer to it. 
-    * Returns null (without allocating the block) if 
+    * pins a buffer to it.
+    * Update idTable with assigned block num and buffer index.
+    * Returns null (without allocating the block) if
     * there are no available buffers.
     * @param filename the name of the file
     * @param fmtr a pageformatter object, used to format the new block
@@ -116,7 +129,7 @@ class BasicBufferMgr {
    }
 
    /**
-    * Student implemented function
+    * CS4432-Project1:
     * @author Myo Thant, Robert Dutile
     * Update the hash table when the new block is assigned or
     * Existing buffer has a block replacement.
@@ -135,9 +148,7 @@ class BasicBufferMgr {
    }
    
    /**
-    * Modified method
-    * original @author Edward Sciore
-    * modified by @author Myo Thant and Robert Dutile
+    * CS4432-Project1:
     * The method is reinvented to finding existing buffer from buffer hash table
     * instead of iterating through the array
     * @param blk block number
@@ -155,6 +166,14 @@ class BasicBufferMgr {
       }
    }
    
+   /**
+    * CS4432-Project1:
+    * This method is modified.
+    * First, buffer manager check the emptyFrameList and take the first frame in the list.
+    * Then use that frame to assign block
+    * If there are no empty frames, buffer manager replace the frames in the list by clock policy
+    * @return buff empty buffer or replacement buffer
+    */
    private Buffer chooseUnpinnedBuffer() {
       // take the first frame from the empty frame list
       Integer emptyBuff = emptyFrameList.pollFirst();
@@ -174,6 +193,15 @@ class BasicBufferMgr {
       }
    }
 
+   /**
+    * CS4432-Project1:
+    * Clock replacement policy
+    * Start from the clock pointer frame
+    * If the frame is pinned, skip,
+    * If the frame is unpinned and refbit = 1, change refbit to 0;
+    * If the frame is unpinned and refbit = 0, use the frame for replacement
+    * @return buff frame to be replaced.
+    */
    private Buffer clockReplace() {
       int isReplaced = 0;
       Buffer buff = null;
@@ -195,4 +223,18 @@ class BasicBufferMgr {
       }
       return buff;
    }
+
+   /**
+    * CS4432-Project1:
+    * Return all the buffer information inside the bufferpool
+    * @return String all buffer information
+    */
+    @Override
+    public String toString() {
+       String buffInfo = "";
+       for(int i = 0; i < numBuffs; i++) {
+          buffInfo = buffInfo + bufferpool[i].toString() + "\n";
+       }
+       return buffInfo;
+    }
 }
