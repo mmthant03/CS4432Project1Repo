@@ -19,7 +19,7 @@ public class Buffer {
    private int pins = 0;
    private int modifiedBy = -1;  // negative means not modified
    private int logSequenceNumber = -1; // negative means no corresponding log record
-   private boolean refBit = false; //0 means ok to edit, 1 means not ok to edit, Student Addition
+   private boolean refBit; //0 means ok to edit, 1 means not ok to edit, Student Addition
    private int bufferIndex;
 
    /**
@@ -36,7 +36,9 @@ public class Buffer {
     * {@link simpledb.server.SimpleDB#initFileAndLogMgr(String)} or
     * is called first.
     */
-   public Buffer() {}
+   public Buffer() {
+	   this.refBit = true;
+   }
 
    /**
     * Student implemented Constructor
@@ -44,7 +46,10 @@ public class Buffer {
     * Creates a new buffer while passing along the index in the buffer pool.
     * @param bufferIndex
     */
-   public Buffer(int bufferIndex) { this.bufferIndex = bufferIndex; }
+   public Buffer(int bufferIndex) { 
+	   this.bufferIndex = bufferIndex;
+	   this.refBit = true;
+   }
    
    /**
     * Returns the integer value at the specified offset of the
