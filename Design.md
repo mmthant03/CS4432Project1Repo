@@ -1,5 +1,6 @@
     
 Robert Dutile, Myo Min Thant
+
 Design File:
 
   In the creation of this extension, we largely followed a process of taking one task at a time, figuring out what we needed to add or change to make it work, performing those alterations, and then moving on to the next. We found that nearly all of the work necessary we could and did perform in the Buffer and BasicBufferMgr files, with the exception of a single toString method we added to the BufferMgr file.
