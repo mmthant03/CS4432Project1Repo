@@ -78,9 +78,11 @@ public class Buffer {
       return contents.getString(offset);
    }
    
-   //CS4432-Project1:
-   //Returns the value of the reference bit.
-   //Student Addition
+   /**
+    * CS4432-Project1:
+    * Returns the value of the reference bit.
+    * Student Addition
+    */
    public boolean getRef() {
 	   return refBit;
    }
