@@ -5,6 +5,8 @@ import simpledb.file.*;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
+import jdk.nashorn.internal.ir.Block;
+
 /**
  * Manages the pinning and unpinning of buffers to blocks.
  * @author Edward Sciore
@@ -23,7 +25,7 @@ class BasicBufferMgr {
     * numBuffs --> num of buffer that is given to the bufferpool
     */
    private LinkedList<Integer> emptyFrameList;
-   private Hashtable<Integer, Integer> idTable;
+   private Hashtable<Block, Integer> idTable;
    private int clockPointer = 0;
    private int numBuffs;
    
@@ -44,12 +46,16 @@ class BasicBufferMgr {
    BasicBufferMgr(int numbuffs) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
-      idTable = new Hashtable<Integer, Integer>(numbuffs);
+      this.numBuffs = numbuffs;
+      idTable = new Hashtable<Block, Integer>(numbuffs);
       // create empty buffer list
       emptyFrameList = new LinkedList<Integer>();
       //Pool Creation
       for (int i=0; i<numbuffs; i++) {
          bufferpool[i] = new Buffer(i);
+         if (bufferpool[i].block() != null){
+            throw new BufferAbortException();
+         }
          emptyFrameList.add(i);
       }
    }
@@ -139,13 +145,13 @@ class BasicBufferMgr {
     */
    private void updateBuff(Buffer buff) {
       int buffId = buff.getBufferIndex();
-      int blockId = buff.getBlockNum();
-      if(idTable.containsKey(blockId)) {
-         idTable.remove(blockId);
-         idTable.put(blockId, buffId);
+      Block blk = buff.block();
+      if(idTable.containsKey(blk)) {
+         idTable.remove(blk);
+         idTable.put(blk, buffId);
       }
       else {
-         idTable.put(blockId, buffId);
+         idTable.put(blk, buffId);
       }
    }
    
@@ -158,9 +164,8 @@ class BasicBufferMgr {
     * null if it does not exist
     */
     private Buffer findExistingBuffer(Block blk) {
-      int blockId = blk.number();
-      if(idTable.containsKey(blockId)) {
-         int buffId = idTable.get(blockId);
+      if(idTable.containsKey(blk)) {
+         int buffId = idTable.get(blk);
          return bufferpool[buffId];
       }
       else {
@@ -181,6 +186,7 @@ class BasicBufferMgr {
       Integer emptyBuff = emptyFrameList.pollFirst();
       if(emptyBuff != null) {
          Buffer buff = bufferpool[emptyBuff];
+         buff.setRef(true);
          return buff;
       }
       else { // need to modified for clock replacement policy
@@ -189,6 +195,10 @@ class BasicBufferMgr {
          //    return buff;
          Buffer buff = clockReplace();
          if(buff != null) {
+            if(buff.block() != null){
+               idTable.remove(buff.block());
+            }
+            buff.setRef(true);
             return buff;
          }
       return null;
