@@ -1,3 +1,4 @@
-Robert Dutile
-Myo Min Thant
+Robert Dutile, Myo Min Thant
+
+ReadMe:
 
