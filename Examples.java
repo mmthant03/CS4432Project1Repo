@@ -142,8 +142,6 @@ public class Examples {
             }
             rsE2.close();
             System.out.println("End of Result");
-            
-
 
         }
         catch (SQLException e) {
@@ -163,7 +161,7 @@ public class Examples {
     /*
      * Expected output:
      * 
-     * Creating Two Tables named EMPLOYEE and DEPARTMENT
+Creating Two Tables named EMPLOYEE and DEPARTMENT
 create table EMPLOYEE(empID int, empName varchar(30), dID int)
 Table EMPLOYEE created.
 create table DEPARTMENT(deptID int, deptName varchar(30))

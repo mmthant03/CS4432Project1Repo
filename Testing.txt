@@ -38,3 +38,11 @@ An employee with ID 3 will be transfer to department ID 102. All employee record
 employee has been transferred or not.
 
 ***7th. Deleting record
+
+An employee who belongs to department ID 100 will be deleted from Employee table. All employee records are displayed to
+prove if that employee has been transderred or not. 
+
+Notes: We cannot get the buffer info printing while running Examples.java. 
+We tried with importing simpledb.server.SimpleDB and called the static method bufferMgr().
+However, we only get null values from that method. Thus, we ended up unresolving this task.
+
