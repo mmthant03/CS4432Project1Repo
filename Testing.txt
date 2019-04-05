@@ -1,3 +1,40 @@
 Robert Dutile, Myo Min Thant
 
-Testing:
+In order to make sure our new Simple DB is working with new Buffer replacement policy,
+we will be testing the created database with a set of SQL queries. 
+
+**Testing:
+When you run Examples.java, these queries will be run sequentially.
+
+***1st. Creating Tables
+
+Two tables named Employees and Department tables will be created.
+Employee has fields employee ID as "empID", name as "empName" and department ID as "dID".
+Department has fields department ID as "deptID", and name as "deptName".
+
+***2nd. Inserting database
+
+Each table will be inserted will dummy data to make sure insertion is working.
+
+***3rd. Querying all fields
+
+Employee table will be run select statement which will select all the employees.
+Department table will be run in the same manner.
+Resulting data will be shown in the output.
+
+***4rd. Querying a specific record
+
+An employee with ID 1 will be selected from the Employee table and name will be displayed.
+A department with ID 100 will be selected from the department table and name will be displayed.
+
+***5th. Querying a specific record from joining tables
+
+The two tables will be joined by department ID key and employees who belong to department ID 100 are selected.
+Their names will be displayed.
+
+***6th. Updating record
+
+An employee with ID 3 will be transfer to department ID 102. All employee records are displayed to prove if that 
+employee has been transferred or not.
+
+***7th. Deleting record
