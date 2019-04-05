@@ -127,6 +127,22 @@ public class Examples {
             }
             rsE1.close();
             System.out.println("End of Result");
+            
+            System.out.println("\nDeleting an employee.");
+            String deleteEmp = "delete from employee where dID = 100";
+            System.out.println(deleteEmp);
+            stmt.executeUpdate(deleteEmp);
+            System.out.println("Employee records deleted");
+            System.out.println("Resulting EMPLOYEE Table");
+            ResultSet rsE2 = stmt.executeQuery(selectAllEmp);
+            while(rsE2.next()) {
+                String emp1 = rsE2.getString("empname");
+                Integer dId1 = rsE2.getInt("did");
+                System.out.println(emp1 + "\t" + dId1);
+            }
+            rsE2.close();
+            System.out.println("End of Result");
+            
 
 
         }
@@ -143,6 +159,80 @@ public class Examples {
             }
         }
     }
+    
+    /*
+     * Expected output:
+     * 
+     * Creating Two Tables named EMPLOYEE and DEPARTMENT
+create table EMPLOYEE(empID int, empName varchar(30), dID int)
+Table EMPLOYEE created.
+create table DEPARTMENT(deptID int, deptName varchar(30))
+Table DEPARTMENT created.
+
+Inserting Data
+insert into EMPLOYEE(empID, empName, dID) values (1, 'joe', 100)
+insert into EMPLOYEE(empID, empName, dID) values (2, 'amy', 101)
+insert into EMPLOYEE(empID, empName, dID) values (3, 'danya', 100)
+insert into EMPLOYEE(empID, empName, dID) values (4, 'watson', 102)
+insert into EMPLOYEE(empID, empName, dID) values (5, 'trump', 101)
+EMPLOYEE data inserted.
+insert into DEPARTMENT(deptID, deptName) values (100, 'marketing')
+insert into DEPARTMENT(deptID, deptName) values (101, 'hr')
+insert into DEPARTMENT(deptID, deptName) values (102, 'finance')
+DEPARTMENT data inserted.
+
+Selecting all Employees
+select empID, empName, dID from employee
+1	joe	100
+2	amy	101
+3	danya	100
+4	watson	102
+5	trump	101
+
+Selecting all Departments
+select deptID, deptName from department
+100	marketing
+101	hr
+102	finance
+
+Selecting Employee with empId=1
+select empName from employee where empID = 1
+joe
+End of Result
+
+Selecting Department with deptId=100
+select deptName from department where deptID = 100
+marketing
+End of Result
+
+Selecting Employee with deptID=100
+select empName from employee, department where dID = deptID and deptID = 100
+joe
+danya
+End of Result
+
+Updating one employee to a new department
+update employee set dID = 102 where empID = 3
+Employee record updated
+Resulting EMPLOYEE Table
+joe	100
+amy	101
+danya	102
+watson	102
+trump	101
+End of Result
+
+Deleting an employee.
+delete from employee where dID = 100
+Employee records deleted
+Resulting EMPLOYEE Table
+amy	101
+danya	102
+watson	102
+trump	101
+End of Result
+
+     */
 
 
 
